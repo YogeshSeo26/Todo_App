@@ -11,10 +11,16 @@ const Login = () => {
         e.preventDefault();
         try {
             const { data } = await API.post('/auth/login', formData);
-            localStorage.setItem('token', data.token);
-            navigate('/dashboard');
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+                // Redirect to dashboard
+                window.location.href = '/dashboard'; // Direct refresh redirect
+            }
+            // localStorage.setItem('token', data.token);
+            // navigate('/dashboard');
         } catch (err) {
-            alert(err.response.data.message);
+            const msg = err.response?.data?.message || "Login failed";
+            alert(msg);
         }
     };
 
